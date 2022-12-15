@@ -1,6 +1,6 @@
 # python3.6
 #### Tasmota MQTT extractor
-appver = "1.2.1"
+appver = "1.3.0"
 appname = "Tasmota MQTT extractor"
 appshortname = "TMQTTEx"
 
@@ -10,8 +10,12 @@ from paho.mqtt import client as mqtt_client
 from prometheus_client import start_http_server, Gauge
 from time import sleep as sleep
 from datetime import datetime
+from os import environ as environ
+
+test_env_var  = environ.get('TEST_ENV_VAR')
 
 print(appname + " ver. "+appver)
+print('test_env_var:'+ str(test_env_var))
 tab='  |'
 server_port = 80
 get_delay = 10
