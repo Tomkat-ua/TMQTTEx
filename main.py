@@ -1,6 +1,6 @@
 # python3.6
 #### Tasmota MQTT extractor
-appver = "1.1.2"
+appver = "1.2.0"
 appname = "Tasmota MQTT extractor"
 appshortname = "TMQTTEx"
 
@@ -23,25 +23,27 @@ client_id = f'python-mqtt-{random.randint(0, 100)}'
 username = 'mqtt'
 password = 'mqtt001'
 metric_name=topic.replace('/','_')
-MQTT_VALUE = Gauge(metric_name, 'topic', ['topic','key','value','type'])
+MQTT_VALUE = Gauge(metric_name, 'topic', ['topic','key','value','type','time'])
 APP_INFO = Gauge('app_info', 'Return app info',['appname','appshortname','version'])
 APP_INFO.labels(appname,appshortname,appver).set(1)
 
 def pars_json(text):
     print('------------------------')
     d = json.loads(text)
+    value_time = d.get("Time")
     for key, values in d.items():
         print(key,values)
         if type(values) != dict:
             if key == 'Time':
+
                 datetime_object = datetime.strptime(values, '%Y-%m-%dT%H:%M:%S')
-                set_metrica(key, int(datetime_object.strftime('%y%m%d%H%M%S')))
-            else: set_metrica(key,values)
+                set_metrica(key, int(datetime_object.strftime('%y%m%d%H%M%S')),value_time)
+            else: set_metrica(key,values,value_time)
         if type(values) == dict:
             for key2, values2 in values.items():
-                set_metrica(key+'_'+key2,values2)
+                set_metrica(key+'_'+key2,values2,value_time)
 
-def set_metrica(k,v):
+def set_metrica(k,v,t):
     vt = type(v)
     if vt in (int,float):
         l3=1
@@ -49,7 +51,7 @@ def set_metrica(k,v):
     else:
         l3 =v
         mv = 1
-    MQTT_VALUE.labels(topic, k, l3, vt).set(mv)
+    MQTT_VALUE.labels(topic, k, l3, vt,t).set(mv)
 def connect_mqtt() -> mqtt_client:
     def on_connect(client, userdata, flags, rc):
         if rc == 0:
