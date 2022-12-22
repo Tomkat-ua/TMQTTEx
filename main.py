@@ -1,6 +1,6 @@
 # python3.6
 #### Tasmota MQTT extractor
-appver = "1.3.0"
+appver = "1.3.1"
 appname = "Tasmota MQTT extractor"
 appshortname = "TMQTTEx"
 
@@ -12,22 +12,37 @@ from time import sleep as sleep
 from datetime import datetime
 from os import environ as environ
 
-test_env_var  = environ.get('TEST_ENV_VAR')
 
 print(appname + " ver. "+appver)
-print('test_env_var:'+ str(test_env_var))
+# print('test_env_var:'+ str(test_env_var))
 tab='  |'
-server_port = 80
+
+server_port = environ.get('SERVER_PORT')
+server_port=80
+
+get_delay = environ.get('GET_DELAY')
 get_delay = 10
+
+broker = environ.get('BROKER_IP')
 broker = '192.168.2.127'
+
+port = environ.get('BROKER_PORT')
 port = 1883
+
+topic = environ.get('TOPIC')
 topic = "tele/7C9EBDFA21A0/SENSOR"
+
+username = environ.get('USERNAME')
+username = 'mqtt'
+
+password = environ.get('PASSWORD')
+password = 'mqtt001'
+
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
-username = 'mqtt'
-password = 'mqtt001'
-metric_name=topic.replace('/','_')
-MQTT_VALUE = Gauge(metric_name, 'topic', ['topic','key','value','type'])
+
+# metric_name=topic.replace('/','_')
+MQTT_VALUE = Gauge(topic.replace('/','_'), 'topic', ['topic','key','value','type'])
 APP_INFO = Gauge('app_info', 'Return app info',['appname','appshortname','version'])
 APP_INFO.labels(appname,appshortname,appver).set(1)
 
