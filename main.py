@@ -17,26 +17,24 @@ print(appname + " ver. "+appver)
 # print('test_env_var:'+ str(test_env_var))
 tab='  |'
 
-server_port = environ.get('SERVER_PORT')
-server_port=80
+env ='dev' #prod
 
-get_delay = environ.get('GET_DELAY')
-get_delay = 10
-
-broker = environ.get('BROKER_IP')
-broker = '192.168.2.127'
-
-port = environ.get('BROKER_PORT')
-port = 1883
-
-topic = environ.get('TOPIC')
-topic = "tele/7C9EBDFA21A0/SENSOR"
-
-username = environ.get('USERNAME')
-username = 'mqtt'
-
-password = environ.get('PASSWORD')
-password = 'mqtt001'
+if env == 'prod':
+    server_port = environ.get('SERVER_PORT')
+    get_delay = environ.get('GET_DELAY')
+    broker = environ.get('BROKER_IP')
+    port = environ.get('BROKER_PORT')
+    topic = environ.get('TOPIC')
+    username = environ.get('USERNAME')
+    password = environ.get('PASSWORD')
+else:
+    server_port=80
+    get_delay = 10
+    broker = '192.168.2.4'
+    port = 1883
+    topic = "tele/7C9EBDFA21A0/SENSOR"
+    username = 'mqtt'
+    password = 'mqtt001'
 
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
