@@ -1,6 +1,6 @@
 # python3.6
 #### Tasmota MQTT extractor
-appver = "1.3.2"
+appver = "1.3.3"
 appname = "Tasmota MQTT extractor"
 appshortname = "TMQTTEx"
 
@@ -20,15 +20,15 @@ tab='  |'
 env ='dev' #prod
 
 if env == 'prod':
-    server_port = environ.get('SERVER_PORT')
-    get_delay = environ.get('GET_DELAY')
+    server_port =int(environ.get('SERVER_PORT'))
+    get_delay = int(environ.get('GET_DELAY'))
     broker = environ.get('BROKER_IP')
-    port = environ.get('BROKER_PORT')
+    port = int(environ.get('BROKER_PORT'))
     topic = environ.get('TOPIC')
     username = environ.get('USERNAME')
     password = environ.get('PASSWORD')
 else:
-    server_port=80
+    server_port=int('80')
     get_delay = 10
     broker = '192.168.2.4'
     port = 1883
@@ -98,7 +98,9 @@ def run():
     client.loop_forever()
 
 if __name__ == '__main__':
-    start_http_server(server_port)
+    try:
+        start_http_server(server_port)
+    except Exception as e: print(e)
     while True:
         run()
         sleep(get_delay)
