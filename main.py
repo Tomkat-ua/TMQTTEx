@@ -1,6 +1,6 @@
 # python3.6
 #### Tasmota MQTT extractor
-appver = "1.3.1"
+appver = "1.3.2"
 appname = "Tasmota MQTT extractor"
 appshortname = "TMQTTEx"
 
