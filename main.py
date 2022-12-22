@@ -18,25 +18,12 @@ print(appname + " ver. "+appver)
 tab='  |'
 
 server_port = environ.get('SERVER_PORT')
-server_port=80
-
 get_delay = environ.get('GET_DELAY')
-get_delay = 10
-
 broker = environ.get('BROKER_IP')
-broker = '192.168.2.127'
-
 port = environ.get('BROKER_PORT')
-port = 1883
-
 topic = environ.get('TOPIC')
-topic = "tele/7C9EBDFA21A0/SENSOR"
-
 username = environ.get('USERNAME')
-username = 'mqtt'
-
 password = environ.get('PASSWORD')
-password = 'mqtt001'
 
 # generate client ID with pub prefix randomly
 client_id = f'python-mqtt-{random.randint(0, 100)}'
